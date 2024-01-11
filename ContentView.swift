@@ -20,6 +20,13 @@ struct ContentView: View {
                             .bold()
                     }
                 }
+                .contextMenu {
+                    Button(role: .destructive) {
+                        removeJournal(journal)
+                    } label: {
+                        Text("Delete")                        
+                    }
+                }
             }
             .navigationTitle("Journal")
             .navigationBarTitleDisplayMode(.inline)
@@ -54,5 +61,10 @@ struct ContentView: View {
     
     func addJournal() {
             journals.append(Journal())
+    }
+    
+    func removeJournal(_ journal: Journal) {
+        let index = journals.firstIndex{ $0 === journal }!
+        journals.remove(at: index)
     }
 }   
