@@ -10,8 +10,15 @@ struct ContentView: View {
                     JournalView(journal: journal)
                 } label: {
                     let isEmpty = journal.title.isEmpty
-                    Text(isEmpty ? "New Journal" : journal.title)
-                        .opacity(isEmpty ? 0.5 : 1)
+                    VStack(alignment: .leading) {
+                        Text(isEmpty ? "New Journal" : journal.title)
+                            .opacity(isEmpty ? 0.5 : 1)
+                            .lineLimit(1)
+                        Text(journal.creationDate.dateString)
+                            .foregroundStyle(.secondary)
+                            .font(.caption)
+                            .bold()
+                    }
                 }
             }
             .navigationTitle("Journal")
