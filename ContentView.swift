@@ -7,7 +7,7 @@ struct ContentView: View {
         NavigationStack {
             List(journals) { journal in
                 NavigationLink {
-                    Text("Detail View")
+                    JournalView(journal: journal)
                 } label: {
                     let isEmpty = journal.title.isEmpty
                     Text(isEmpty ? "New Journal" : journal.title)
