@@ -2,10 +2,21 @@ import SwiftUI
 
 struct ContentView: View {
     @State var journals: [Journal] = []
+    @State var showDateFilterSheet: Bool = false
+    @State var selectedDate: Date = Date()
+    
+    var filteredJournals: [Journal] {
+        journals
+            .lazy
+            .filter {
+                Calendar.current.isDate($0.creationDate, inSameDayAs: selectedDate)
+            }
+            .sorted(using: KeyPathComparator(\.creationDate))
+    }
     
     var body: some View {
         NavigationStack {
-            List(journals) { journal in
+            List(filteredJournals) { journal in
                 NavigationLink {
                     JournalView(journal: journal)
                 } label: {
@@ -28,6 +39,10 @@ struct ContentView: View {
                     }
                 }
             }
+            .sheet(isPresented: $showDateFilterSheet) {
+                DateFilterSheet(selectedDate: $selectedDate)
+                    .presentationDetents([.height(410)])
+            }
             .navigationTitle("Journal")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -37,9 +52,13 @@ struct ContentView: View {
                 }
                 
                 ToolbarItem(placement: .topBarTrailing) {
-                    Image(systemName: "calendar")
-                        .foregroundStyle(.secondary)
-                        .symbolRenderingMode(.multicolor)
+                    Button {
+                        showDateFilterSheet = true
+                    } label: {
+                        Image(systemName: "calendar")
+                            .foregroundStyle(.secondary)
+                            .symbolRenderingMode(.multicolor)
+                    }
                 }
             }
             .overlay(alignment: .bottom) {
