@@ -24,7 +24,7 @@ struct ContentView: View {
                     Button(role: .destructive) {
                         removeJournal(journal)
                     } label: {
-                        Text("Delete")                        
+                        Label("Delete", systemImage: "trash")
                     }
                 }
             }
