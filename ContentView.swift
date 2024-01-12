@@ -1,7 +1,11 @@
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
-    @State var journals: [Journal] = []
+    @Environment(\.modelContext) var modelContext
+    @Query(sort: [SortDescriptor(\Journal.creationDate)]) 
+    var journals: [Journal]
+    
     @State var showDateFilterSheet: Bool = false
     @State var selectedDate: Date = Date()
     
@@ -11,7 +15,6 @@ struct ContentView: View {
             .filter {
                 Calendar.current.isDate($0.creationDate, inSameDayAs: selectedDate)
             }
-            .sorted(using: KeyPathComparator(\.creationDate))
     }
     
     var body: some View {
@@ -79,11 +82,10 @@ struct ContentView: View {
     }
     
     func addJournal() {
-            journals.append(Journal())
+        modelContext.insert(Journal())
     }
     
     func removeJournal(_ journal: Journal) {
-        let index = journals.firstIndex{ $0 === journal }!
-        journals.remove(at: index)
+        modelContext.delete(journal)
     }
 }   

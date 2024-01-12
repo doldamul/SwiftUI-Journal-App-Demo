@@ -1,9 +1,12 @@
-import SwiftUI
+import SwiftData
+import Foundation
 
-@Observable
+@Model
 class Journal: Identifiable {
     let creationDate: Date = Date.now
     
     var title: String = ""
     var content: String = ""
+    
+    init() {}
 }
